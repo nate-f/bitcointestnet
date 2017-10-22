@@ -1,11 +1,45 @@
 ﻿using System;
 using System.Reflection.Emit;
 using System.Security.Policy;
+using System.Security.Cryptography;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CryptoUtilities
 {
-    public static class ShaHelper
+    public static class SHAHelper
     {
+        public static byte[] ComputeSHA256(byte[] input)
+        {
+            return sha.ComputeHash(input);
+        }
+        public static byte[] DoubleSHA256(byte[] input)
+        {
+            return ComputeSHA256(ComputeSHA256(input));
+        }
+        public static byte[] ComputeMerkleTree(List<Transaction> transactions)
+        {
+            var hashes = new List<byte[]>();
+            hashes.AddRange(transactions.Select(q => q.Data));
+            do
+            {
+                var newHashes = new List<byte[]>();
+                for (int i = 0; i < hashes.Count; i += 2)
+                {
+                    byte[] xa1 = DoubleSHA256(hashes[i]);
+                    byte[] xa2 = i + 1 < transactions.Count ? DoubleSHA256(hashes[i + 1]) : xa1;
+                    var concat = new byte[64];
+                    xa1.CopyTo(concat, 0);
+                    xa2.CopyTo(concat, 32);
+                    var hash = DoubleSHA256(concat);
+                    newHashes.Add(hash);
+                }
+                hashes = newHashes;
+            } while (hashes.Count != 1);
+            return hashes.First();
+        }
+        #region homebrew
+
         private static uint h0;
         private static uint h1;
         private static uint h2;
@@ -16,7 +50,9 @@ namespace CryptoUtilities
         private static uint h7;
 
         private static uint[] k = new uint[64];
-        static ShaHelper()
+
+        private static HashAlgorithm sha = new SHA256CryptoServiceProvider();
+        static SHAHelper()
         {
             h0 = h0s.FromString().ToUint32();
             h1 = h1s.FromString().ToUint32();
@@ -32,6 +68,7 @@ namespace CryptoUtilities
                 k[i] = ks[i].FromString().ToUint32();
             }
         }
+       
 
         public unsafe static uint[] SHA256(byte[] data)
         {
@@ -44,7 +81,7 @@ namespace CryptoUtilities
                 for(int i = 0; i < 16; i++)
                 {
                     
-                    int k = paddedData[i * 4] << 24;
+                    uint k = paddedData[i * 4] << 24;
                     k += paddedData[i * 4 + 1] << 16;
                     k += paddedData[i * 4 + 2] << 8;
                     k += paddedData[i * 4 + 3];
@@ -97,16 +134,16 @@ namespace CryptoUtilities
             
             var totalsize = data.Length + (64 - (data.Length % 64 + 1)); //in bytes
             uint[] d = new uint[totalsize / 4];
-            fixed (byte* dataPtr = d)
-            {
-                for (int i = 0; i < data.Length; i++)
-                {
-                    dataPtr[i] = data[i];
-                }
-                dataPtr[data.Length + 1] = 128;
-                var intptr = (int*)(dataPtr + totalsize);
-                *intptr = totalsize;
-            }
+            //fixed (byte* dataPtr = d)
+            //{
+            //    for (int i = 0; i < data.Length; i++)
+            //    {
+            //        dataPtr[i] = data[i];
+            //    }
+            //    dataPtr[data.Length + 1] = 128;
+            //    var intptr = (int*)(dataPtr + totalsize);
+            //    *intptr = totalsize;
+            //}
             return d;
         }
 
@@ -128,5 +165,7 @@ namespace CryptoUtilities
             "a2bfe8a1", "a81a664b", "c24b8b70", "c76c51a3", "d192e819", "d6990624", "f40e3585", "106aa070",
             "19a4c116", "1e376c08", "2748774c", "34b0bcb5", "391c0cb3", "4ed8aa4a", "5b9cca4f", "682e6ff3",
             "748f82ee", "78a5636f", "84c87814", "8cc70208", "90befffa", "a4506ceb", "bef9a3f7", "c67178f2" };
+
+        #endregion
     }
 }

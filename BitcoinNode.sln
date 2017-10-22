@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoUtilities", "CryptoUt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoUtilitiesTests", "CryptoUtilitiesTests\CryptoUtilitiesTests.csproj", "{51AD84B0-55A5-470E-9299-6256C46FEA8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structures", "Structures\Structures.csproj", "{810B3152-86A8-4480-A9AE-54BD648428CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{51AD84B0-55A5-470E-9299-6256C46FEA8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51AD84B0-55A5-470E-9299-6256C46FEA8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51AD84B0-55A5-470E-9299-6256C46FEA8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{810B3152-86A8-4480-A9AE-54BD648428CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{810B3152-86A8-4480-A9AE-54BD648428CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{810B3152-86A8-4480-A9AE-54BD648428CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{810B3152-86A8-4480-A9AE-54BD648428CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
