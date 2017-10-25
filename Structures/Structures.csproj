@@ -44,8 +44,17 @@
     <Compile Include="BigEndianAttribute.cs" />
     <Compile Include="BlockHeader.cs" />
     <Compile Include="InventoryVector.cs" />
+    <Compile Include="Messages\AddrMessage.cs" />
+    <Compile Include="Messages\BlockHeader.cs" />
+    <Compile Include="Messages\GetBlocksMessage.cs" />
+    <Compile Include="Messages\GetDataMessage.cs" />
+    <Compile Include="Messages\GetHeadersMessage.cs" />
+    <Compile Include="Messages\InventoryMessage.cs" />
+    <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageHeader.cs" />
     <Compile Include="INodeSerializable.cs" />
+    <Compile Include="Messages\NotFoundMessage.cs" />
+    <Compile Include="Messages\VerackMessage.cs" />
     <Compile Include="Messages\VersionMessage.cs" />
     <Compile Include="NetworkAddress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

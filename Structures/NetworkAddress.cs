@@ -30,6 +30,21 @@ namespace Structures
             else
                 this.IPv6Address = address;
         }
+        public NetworkAddress(byte[] bits, bool isVersionMessage = false)
+        {
+            var ptr = 0;
+            if(!isVersionMessage)
+            {
+                for (int i = 0; i < 4; i++) time += (UInt32)(bits[ptr + i] << 8 * i);
+                ptr += 4;
+            }
+            for (int i = 7; i >= 0; i--) services += (UInt64)(bits[ptr + i] << 8 * i);
+            ptr += 8;
+            IPv6Address = bits.Skip(ptr).Take(16).ToArray();
+            ptr += 16;
+            port += (ushort)(bits[ptr++] << 8);
+            port += (ushort)(bits[ptr++]);  //network order
+        }
 
 
         public byte[] Serialize()

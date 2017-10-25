@@ -11,11 +11,11 @@ namespace Structures
     {
         //testnet for now
         //LITTLE ENDIAN 
-        private UInt32 magic = 118034699;
-        private char[] command; // 12 bytes long
-        private UInt32 length = 0;
-        private UInt32 checksum = 0;
-        private byte[] payload;
+        public UInt32 magic = 0;
+        public char[] command = new char[12]; // 12 bytes long
+        public UInt32 length = 0;
+        public UInt32 checksum = 0;
+        public byte[] payload;
 
         public MessageHeader(char[] command, byte[] payload)
         {
@@ -30,15 +30,34 @@ namespace Structures
             checksum += (uint)(check[3] << 0);
 
         }
-        public MessageHeader(byte[] bits) //still gonna have to worry about endianness
+        public MessageHeader(byte[] bits)
         {
-            unsafe
+            var ptr = 0;
+            for (int i = 3; i >= 0; i--) magic += (UInt32)(bits[ptr + i] << 8 * (3 - i));
+            ptr += 4;
+            for(int i = 0; i < 12; i++)
             {
-                fixed (byte* dataPtr = bits)
+                command[i] = (char)bits[ptr++];
+            }
+
+            for (int i = 3; i >= 0; i--) length += (UInt32)(bits[ptr + i] << 8 * i);
+            ptr += 4;
+            
+            var checksum = bits.Skip(ptr).Take(4).ToArray();
+
+            var payload = bits.Skip(24).ToArray();
+            var hash = SHAHelper.DoubleSHA256(payload);
+            for (int i = 0; i < 4; i++)
+            {
+                if (hash[i] != checksum[i])
                 {
-                    magic = *((UInt32*)dataPtr);
+                    throw new Exception();
                 }
             }
+            for (int i = 3; i >= 0; i--) this.checksum += (UInt32)(bits[ptr + i] << 8 * i);
+            ptr += 4;
+            this.payload = payload;
+
         }
         public byte[] Serialize()
         {

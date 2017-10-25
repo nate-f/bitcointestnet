@@ -1,13 +1,16 @@
-﻿using System;
+﻿using CryptoUtilities;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Structures.Messages
 {
-    public class VersionMessage
+    public class VersionMessage : Message
     {
+        public static readonly char[] command = new char[12] { 'v', 'e', 'r', 's', 'i', 'o', 'n', '\0', '\0', '\0', '\0', '\0' };
         private int version;
         private UInt64 services;
         private Int64 timestamp;
@@ -35,7 +38,30 @@ namespace Structures.Messages
         }
         public VersionMessage(byte[] bits)
         {
-            MessageHeader header = 
+            int ptr = 0;
+            //version
+            for (int i = 3; i >= 0; i--) version += bits[ptr + i] << 8 * i;
+            ptr += 4;
+            //services
+            for (int i = 7; i >= 0; i--) services += (UInt64)(bits[ptr + i] << 8 * i);
+            ptr += 8;
+            //timestamp
+            for (int i = 7; i >= 0; i--) timestamp += (bits[ptr + i] << 8 * i);
+            ptr += 8;
+            //addr_recv
+            addr_recv = new NetworkAddress(bits.Skip(ptr).Take(26).ToArray(), true);
+            ptr += 26;
+            //addr_from
+            addr_from = new NetworkAddress(bits.Skip(ptr).Take(26).ToArray(), true);
+            ptr += 26;
+            //nonce
+            for (int i = 7; i >= 0; i--) nonce += (UInt64)(bits[ptr + i] << 8 * i);
+            //ignore user_agent for now
+            ptr++;
+            //start_height
+            for (int i = 3; i >= 0; i--) start_height += (bits[ptr + i] << 8 * i);
+            //ignore relay for now
+            relay = true;
         }
     }
 }
