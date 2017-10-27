@@ -13,9 +13,8 @@ namespace Structures.Messages
         public List<byte[]> blk_lctr_hashes = new List<byte[]>();
         public byte[] hash_stop;
 
-        public GetHeadersMessage(byte[] bits)
+        public GetHeadersMessage(byte[] bits, ref int ptr)
         {
-            var ptr = 0;
             version = (int)ReadUInt32(bits, ref ptr);
             hash_count = ReadVarInt(bits, ref ptr);
             for(ulong i = 0; i < hash_count; i++)

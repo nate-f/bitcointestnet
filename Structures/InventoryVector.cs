@@ -12,9 +12,8 @@ namespace Structures
         private UInt32 type;
         private byte[] hash; //32 bits wide
 
-        public InventoryVector(byte[] bits)
+        public InventoryVector(byte[] bits, ref int ptr)
         {
-            int ptr = 0;
             type = Message.ReadUInt32(bits, ref ptr);
             hash = bits.Skip(4).ToArray();
         }

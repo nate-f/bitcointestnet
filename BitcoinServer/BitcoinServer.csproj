@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{810B3152-86A8-4480-A9AE-54BD648428CA}</ProjectGuid>
+    <ProjectGuid>{14EBE224-C312-478D-BA2B-377800802653}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Structures</RootNamespace>
-    <AssemblyName>Structures</AssemblyName>
+    <RootNamespace>BitcoinServer</RootNamespace>
+    <AssemblyName>BitcoinServer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,33 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BigEndianAttribute.cs" />
-    <Compile Include="BlockHeader.cs" />
-    <Compile Include="InventoryVector.cs" />
-    <Compile Include="Messages\AddrMessage.cs" />
-    <Compile Include="Messages\BlockHeader.cs" />
-    <Compile Include="Messages\BlockMessage.cs" />
-    <Compile Include="Messages\GetBlocksMessage.cs" />
-    <Compile Include="Messages\GetDataMessage.cs" />
-    <Compile Include="Messages\GetHeadersMessage.cs" />
-    <Compile Include="Messages\InventoryMessage.cs" />
-    <Compile Include="Messages\Message.cs" />
-    <Compile Include="Messages\MessageHeader.cs" />
-    <Compile Include="INodeSerializable.cs" />
-    <Compile Include="Messages\NotFoundMessage.cs" />
-    <Compile Include="Messages\Transaction.cs" />
-    <Compile Include="Messages\TxWitnesses.cs" />
-    <Compile Include="Messages\VerackMessage.cs" />
-    <Compile Include="Messages\VersionMessage.cs" />
-    <Compile Include="NetworkAddress.cs" />
+    <Compile Include="BitcoinServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Transaction.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CryptoUtilities\CryptoUtilities.csproj">
-      <Project>{B038910F-097F-4DDD-B183-2C6379F48C3E}</Project>
-      <Name>CryptoUtilities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

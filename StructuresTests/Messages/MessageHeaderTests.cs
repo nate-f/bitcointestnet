@@ -17,7 +17,8 @@ namespace Structures.Tests
             var bits = new byte[24] { 249, 190, 180, 217, 118, 101, 114, 115, 105, 111, 110,
                 000, 000, 000, 000, 000, 000, 000, 000, 000, 93, 246, 224, 226 };
 
-            var message = new MessageHeader(bits);
+            int ptr = 0;
+            var message = new MessageHeader(bits, ref ptr);
             var command = "version\0\0\0\0\0".ToCharArray();
             Assert.AreEqual(message.command.ToString(), command.ToString());
             Assert.AreEqual(message.length, (UInt32)0);

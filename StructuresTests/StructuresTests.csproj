@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Messages\AddrMessageTests.cs" />
     <Compile Include="Messages\MessageHeaderTests.cs" />
+    <Compile Include="Messages\MessageTests.cs" />
+    <Compile Include="Messages\TransactionTests.cs" />
     <Compile Include="Messages\VersionMessageTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

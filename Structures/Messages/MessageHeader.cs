@@ -1,4 +1,5 @@
 ﻿using CryptoUtilities;
+using Structures.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,18 +31,15 @@ namespace Structures
             checksum += (uint)(check[3] << 0);
 
         }
-        public MessageHeader(byte[] bits)
+        public MessageHeader(byte[] bits, ref int ptr)
         {
-            var ptr = 0;
-            for (int i = 3; i >= 0; i--) magic += (UInt32)(bits[ptr + i] << 8 * (3 - i));
-            ptr += 4;
+            magic = Message.ReadUInt32(bits, ref ptr);
             for(int i = 0; i < 12; i++)
             {
                 command[i] = (char)bits[ptr++];
             }
 
-            for (int i = 3; i >= 0; i--) length += (UInt32)(bits[ptr + i] << 8 * i);
-            ptr += 4;
+            length = Message.ReadUInt32(bits, ref ptr);
             
             var checksum = bits.Skip(ptr).Take(4).ToArray();
 
@@ -54,8 +52,7 @@ namespace Structures
                     throw new Exception();
                 }
             }
-            for (int i = 3; i >= 0; i--) this.checksum += (UInt32)(bits[ptr + i] << 8 * i);
-            ptr += 4;
+            this.checksum = Message.ReadUInt32(bits, ref ptr);
             this.payload = payload;
 
         }

@@ -10,13 +10,12 @@ namespace Structures.Messages
     {
         public int count;
         public List<InventoryVector> inventory = new List<InventoryVector>();
-        public GetDataMessage(byte[] bits)
+        public GetDataMessage(byte[] bits, ref int ptr)
         {
-            int ptr = 0;
             count = (int) ReadVarInt(bits, ref ptr);
             for(int i = 0; i < count; i++)
             {
-                var inv = new InventoryVector(bits);
+                var inv = new InventoryVector(bits, ref ptr);
                 inventory.Add(inv);
                 ptr += 36;
             }

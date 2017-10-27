@@ -15,9 +15,8 @@ namespace Structures.Messages
         public UInt32 difficulty; //difficulty
         public UInt32 nonce;
         public int txn_count; //should always be zero
-        public BlockHeaderMessage(byte[] bits)
+        public BlockHeaderMessage(byte[] bits, ref int ptr)
         {
-            int ptr = 0;
             version = (int) ReadUInt32(bits, ref ptr);
             prev_block = bits.Skip(ptr).Take(32).ToArray();
             ptr += 32;

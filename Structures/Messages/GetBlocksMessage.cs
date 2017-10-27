@@ -13,9 +13,8 @@ namespace Structures.Messages
         public List<byte[]> block_loc_hash = new List<byte[]>(); //32 bytes wide
         public byte[] hash_stop; //zero to get 500 blocks
 
-        public GetBlocksMessage(byte[] bits)
+        public GetBlocksMessage(byte[] bits, ref int ptr)
         {
-            int ptr = 0;
             version = ReadUInt32(bits, ref ptr);
             hash_count = (int)ReadVarInt(bits, ref ptr);
             for (int i = 0; i < hash_count; i++)

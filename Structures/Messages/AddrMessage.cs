@@ -10,9 +10,8 @@ namespace Structures.Messages
     {
         public static readonly char[] command = new char[12] { 'a', 'd', 'd', 'r', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0' };
         private readonly List<NetworkAddress> addresses = new List<NetworkAddress>();
-        public AddrMessage(byte[] bits)
+        public AddrMessage(byte[] bits, ref int ptr)
         {
-            int ptr = 0;
             int numOfAddresses = bits[ptr]; //max 1000
             if(numOfAddresses > 254)
             {
@@ -22,8 +21,9 @@ namespace Structures.Messages
             ptr++;
             for(int i = 0; i < numOfAddresses; i++)
             {
-                var ipaddr = new NetworkAddress(bits.Skip(ptr).Take(30).ToArray());
+                var ipaddr = new NetworkAddress(bits, ref ptr);
                 addresses.Add(ipaddr);
+                ptr += 30;
             }
         }
     }

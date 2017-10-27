@@ -9,7 +9,7 @@ namespace Structures.Messages
     public class VerackMessage : Message
     {
         public static readonly char[] command = new char[12] { 'v', 'e', 'r', 'a', 'c', 'k', '\0', '\0', '\0', '\0', '\0', '\0' };
-        public VerackMessage(byte[] b)
+        public VerackMessage(byte[] b, ref int ptr)
         {
             if (b.Length > 0) throw new Exception();
         }

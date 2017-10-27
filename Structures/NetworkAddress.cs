@@ -30,9 +30,8 @@ namespace Structures
             else
                 this.IPv6Address = address;
         }
-        public NetworkAddress(byte[] bits, bool isVersionMessage = false)
+        public NetworkAddress(byte[] bits, ref int ptr, bool isVersionMessage = false)
         {
-            var ptr = 0;
             if(!isVersionMessage)
             {
                 for (int i = 0; i < 4; i++) time += (UInt32)(bits[ptr + i] << 8 * i);

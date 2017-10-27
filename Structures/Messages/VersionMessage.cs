@@ -19,7 +19,7 @@ namespace Structures.Messages
         //fields below require version >= 106
         private NetworkAddress addr_from;
         private UInt64 nonce;
-        private byte[] user_agent = new byte[2] { 0, 0 }; //revisit this later, variable size but probably want a fun user-agent
+        private byte[] user_agent;
         private int start_height;
         //version > 70000
         bool relay;
@@ -31,35 +31,23 @@ namespace Structures.Messages
             this.timestamp = timestamp;
             this.addr_recv = recv;
             this.addr_from = from;
-            this.nonce = nonce;
+            this.nonce = nonce; //also called 'node id' in documentation
             this.user_agent = user_agent;
             this.start_height = start_height;
             this.relay = relay;
         }
-        public VersionMessage(byte[] bits)
+        public VersionMessage(byte[] bits, ref int ptr)
         {
-            int ptr = 0;
-            //version
-            for (int i = 3; i >= 0; i--) version += bits[ptr + i] << 8 * i;
-            ptr += 4;
-            //services
-            for (int i = 7; i >= 0; i--) services += (UInt64)(bits[ptr + i] << 8 * i);
-            ptr += 8;
-            //timestamp
-            for (int i = 7; i >= 0; i--) timestamp += (bits[ptr + i] << 8 * i);
-            ptr += 8;
-            //addr_recv
-            addr_recv = new NetworkAddress(bits.Skip(ptr).Take(26).ToArray(), true);
-            ptr += 26;
-            //addr_from
-            addr_from = new NetworkAddress(bits.Skip(ptr).Take(26).ToArray(), true);
-            ptr += 26;
-            //nonce
-            for (int i = 7; i >= 0; i--) nonce += (UInt64)(bits[ptr + i] << 8 * i);
-            //ignore user_agent for now
-            ptr++;
-            //start_height
-            for (int i = 3; i >= 0; i--) start_height += (bits[ptr + i] << 8 * i);
+            version = (int)ReadUInt32(bits, ref ptr);
+            services = ReadUInt64(bits, ref ptr);
+            timestamp = (long)ReadUInt64(bits, ref ptr);
+            addr_recv = new NetworkAddress(bits, ref ptr, true);
+            addr_from = new NetworkAddress(bits, ref ptr, true);
+            nonce += ReadUInt64(bits, ref ptr);
+            var user_agent_length = (int) ReadVarInt(bits, ref ptr); //get the length of the user agent string
+            user_agent = new byte[user_agent_length];
+            for(int i = 0; i < user_agent_length; i++)user_agent[i] = bits[ptr++];
+            start_height = (int)ReadUInt32(bits, ref ptr);
             //ignore relay for now
             relay = true;
         }

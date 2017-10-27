@@ -19,12 +19,7 @@ namespace BitcoinNode
         }
         public static void Process(byte[] bits)
         {
-            Message m = Message.CreateMessageFromByteArray(bits);
-            if(m is VersionMessage)
-            {
-                var versionMessage = m as VersionMessage;
-                //process the version message
-            }
+
         }
     }
 }
